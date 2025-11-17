@@ -265,6 +265,17 @@ async function enviarInscripcion() {
     return;
   }
 
+  // ADVERTENCIA IMPORTANTE: Confirmar antes de inscribirse
+  const confirmar = confirm(
+    "⚠️ ATENCIÓN: Una vez confirmada la inscripción, NO podrás modificarla ni cancelarla.\n\n" +
+    "Por favor, verifica que hayas seleccionado correctamente todas las materias.\n\n" +
+    "¿Deseas confirmar la inscripción?"
+  );
+
+  if (!confirmar) {
+    return; // El usuario canceló
+  }
+
   try {
     // Enviar la inscripción al backend
     const response = await fetch(`${API_URL}/inscripciones`, {

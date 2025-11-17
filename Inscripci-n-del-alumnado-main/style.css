@@ -234,3 +234,23 @@ footer {
   border-bottom: 1px solid #eee;
 }
 
+/* === Advertencia de inscripción === */
+.advertencia-inscripcion {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 20px 0;
+  color: #856404;
+}
+
+.advertencia-inscripcion p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.advertencia-inscripcion strong {
+  color: #d9534f;
+}
+
