@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscripción - Terciario Urquiza</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <img src="assets/img/logo urquiza.jpg" alt="Logo Terciario Urquiza" class="logo">
+    <h1>Terciario Urquiza</h1>
+    <h2>Inscripciones</h2>
+  </header>
+
+<section class="carrusel">
+  <div class="slide activo">
+    <img src="assets/img/terciario.jpg" alt="Edificio del Instituto Urquiza">
+  </div>
+  <div class="slide">
+    <img src="assets/img/terciario 2.jpg" alt="Estudiantes del Instituto Urquiza">
+  </div>
+  <div class="slide">
+    <img src="assets/img/terciario 3.jpg" alt="Aula del Instituto Urquiza">
+  </div>
+</section>
+
+
+<section class="carreras-logos">
+  <h3>Nuestras Carreras</h3>
+  <div class="logos">
+    <div class="logo-carrera">
+      <img src="assets/img/af.jpg" alt="Análisis Funcional">
+      <p>Análisis Funcional</p>
+    </div>
+    <div class="logo-carrera">
+      <img src="assets/img/ds.jpg" alt="Desarrollo de Software">
+      <p>Desarrollo de Software</p>
+    </div>
+    <div class="logo-carrera">
+      <img src="assets/img/iti.jpg" alt="Infraestructura TI">
+      <p>Infraestructura TI</p>
+    </div>
+  </div>
+</section>
+
+
+
+  <div class="container">
+
+    <!-- 1. Pantalla DNI -->
+    <div id="pantallaDNI">
+      <h1>Terciario Urquiza</h1>
+      <h2>Inscripción de Alumnos</h2>
+      <label for="dni">Ingrese su DNI:</label>
+      <input type="text" id="dni" />
+      <button onclick="buscarAlumnoPorDNI()">Ingresar</button>
+    </div>
+
+    <!-- 2. Pantalla Selección de Carrera -->
+    <div id="pantallaSeleccionCarrera" class="oculto">
+      <h2>Seleccione una Carrera</h2>
+      <p>Bienvenido/a, <span id="nombreAlumno"></span></p>
+      <div id="listaCarreras"></div>
+      <button onclick="irA('dni')">Volver</button>
+    </div>
+
+    <!-- 3. Menú -->
+    <div id="pantallaMenu" class="oculto">
+      <h2>Seleccione una opción</h2>
+      <button onclick="irA('cursado')">Inscripción a cursar</button>
+      <button onclick="irA('mesas')">Inscripción a mesas de examen</button>
+      <button onclick="irA('historial')">Historial académico</button>
+      <button onclick="irA('dni')">Salir</button>
+    </div>
+
+    <!-- 4. Inscripción a cursado -->
+    <div id="pantallaCursado" class="oculto">
+      <h2>Inscripción a Cursado</h2>
+      <p>Carrera: <strong id="nombreCarreraActual"></strong></p>
+
+      <div class="materias">
+        <h3>Seleccione materias:</h3>
+        <form id="formMaterias"></form>
+      </div>
+
+      <button onclick="enviarInscripcion()">Confirmar inscripción</button>
+      <button onclick="irA('menu')">Cancelar</button>
+    </div>
+
+    <!-- 5. Confirmación -->
+    <div id="pantallaConfirmacion" class="oculto">
+      <h2>Inscripción confirmada ✅</h2>
+      <div id="detalleInscripcion"></div>
+      <button onclick="irA('menu')">Volver al Menú</button>
+      <button onclick="irA('dni')">Salir</button>
+    </div>
+
+    <!-- 6. Inscripción a mesas -->
+    <div id="pantallaMesas" class="oculto">
+      <h2>Inscripción a Mesas de Examen</h2>
+      <p>(Próximamente)</p>
+      <button onclick="irA('menu')">Volver</button>
+    </div>
+
+    <!-- 7. Historial académico -->
+    <div id="pantallaHistorial" class="oculto">
+      <h2>Historial Académico</h2>
+      <p>(Próximamente)</p>
+      <button onclick="irA('menu')">Volver</button>
+    </div>
+
+  </div>
+
+  
+  <footer>
+    <p>📍 Bv. Oroño 690- Rosario</p>
+  
+    <p>© Terciario Urquiza</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
