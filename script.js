@@ -1,7 +1,7 @@
 // ============================================
 // CONFIGURACIÓN DE LA API
 // ============================================
-const API_URL = "https://pp1-kbuk.onrender.com";
+const API_URL = "https://pp1-kbuk.onrender.com/api";
 
 // ============================================
 // FUNCIONES AUXILIARES
