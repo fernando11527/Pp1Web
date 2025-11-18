@@ -254,3 +254,46 @@ footer {
   color: #d9534f;
 }
 
+/* ============================================
+   INDICADOR DE CARGA
+   ============================================ */
+
+.loading {
+  text-align: center;
+  padding: 30px;
+  margin: 20px 0;
+  background: #f0f8ff;
+  border: 2px solid #007BFF;
+  border-radius: 8px;
+}
+
+.loading p {
+  margin: 15px 0 0 0;
+  color: #007BFF;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Spinner animado */
+.spinner {
+  margin: 0 auto;
+  width: 50px;
+  height: 50px;
+  border: 5px solid #e0e0e0;
+  border-top: 5px solid #007BFF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Deshabilitar botón mientras carga */
+button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+

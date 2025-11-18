@@ -54,7 +54,13 @@
       <h2>Inscripción de Alumnos</h2>
       <label for="dni">Ingrese su DNI:</label>
       <input type="text" id="dni" />
-      <button onclick="buscarAlumnoPorDNI()">Ingresar</button>
+      <button id="btnBuscarDNI" onclick="buscarAlumnoPorDNI()">Ingresar</button>
+      
+      <!-- Indicador de carga para búsqueda -->
+      <div id="loadingBusqueda" class="loading oculto">
+        <div class="spinner"></div>
+        <p>Buscando alumno...</p>
+      </div>
     </div>
 
     <!-- 2. Pantalla Selección de Carrera -->
@@ -79,6 +85,12 @@
       <h2>Inscripción a Cursado</h2>
       <p>Carrera: <strong id="nombreCarreraActual"></strong></p>
 
+      <!-- Indicador de carga para materias -->
+      <div id="loadingMaterias" class="loading oculto">
+        <div class="spinner"></div>
+        <p>Cargando materias disponibles...</p>
+      </div>
+
       <div class="materias">
         <h3>Seleccione materias:</h3>
         <form id="formMaterias"></form>
@@ -88,8 +100,14 @@
         <p>⚠️ <strong>IMPORTANTE:</strong> Una vez confirmada la inscripción, <strong>NO podrás modificarla ni cancelarla</strong>. Asegúrate de seleccionar correctamente todas las materias antes de confirmar.</p>
       </div>
 
-      <button onclick="enviarInscripcion()">Confirmar inscripción</button>
+      <button id="btnConfirmarInscripcion" onclick="enviarInscripcion()">Confirmar inscripción</button>
       <button onclick="irA('menu')">Cancelar</button>
+      
+      <!-- Indicador de carga -->
+      <div id="loadingInscripcion" class="loading oculto">
+        <div class="spinner"></div>
+        <p>Procesando inscripción... Por favor espere.</p>
+      </div>
     </div>
 
     <!-- 5. Confirmación -->

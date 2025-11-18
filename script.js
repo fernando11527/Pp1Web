@@ -44,13 +44,36 @@ async function buscarAlumnoPorDNI() {
     return;
   }
 
+  // Mostrar indicador de carga
+  const btnBuscar = document.getElementById("btnBuscarDNI");
+  const loading = document.getElementById("loadingBusqueda");
+  const inputDNI = document.getElementById("dni");
+  
+  btnBuscar.disabled = true;
+  btnBuscar.textContent = "Buscando...";
+  inputDNI.disabled = true;
+  loading.classList.remove("oculto");
+
   try {
+    // Timeout de 15 segundos
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Tiempo de espera agotado")), 15000)
+    );
+
     // Llamada a la API para buscar el alumno por DNI
-    const response = await fetch(`${API_URL}/alumnos/buscar-dni`, {
+    const fetchPromise = fetch(`${API_URL}/alumnos/buscar-dni`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ dni: dni })
     });
+
+    const response = await Promise.race([fetchPromise, timeoutPromise]);
+
+    // Ocultar indicador de carga
+    loading.classList.add("oculto");
+    btnBuscar.disabled = false;
+    btnBuscar.textContent = "Ingresar";
+    inputDNI.disabled = false;
 
     if (!response.ok) {
       if (response.status === 404) {
@@ -70,8 +93,19 @@ async function buscarAlumnoPorDNI() {
     mostrarCarrerasDelAlumno(alumno);
 
   } catch (error) {
+    // Ocultar indicador de carga
+    loading.classList.add("oculto");
+    btnBuscar.disabled = false;
+    btnBuscar.textContent = "Ingresar";
+    inputDNI.disabled = false;
+    
     console.error("Error:", error);
-    alert("Error al conectar con el servidor. Verifique que esté corriendo.");
+    
+    if (error.message === "Tiempo de espera agotado") {
+      alert("⏱️ El servidor está tardando en responder.\n\nPor favor, verifique su conexión e intente nuevamente.");
+    } else {
+      alert("Error al conectar con el servidor. Verifique que esté corriendo.");
+    }
   }
 }
 
@@ -170,14 +204,29 @@ async function cargarMateriasParaInscripcion() {
   // Mostrar el nombre de la carrera en la pantalla
   document.getElementById("nombreCarreraActual").textContent = carrera.nombre;
 
+  // Mostrar pantalla y el indicador de carga
+  mostrarPantalla("pantallaCursado");
+  const loading = document.getElementById("loadingMaterias");
+  loading.classList.remove("oculto");
+
   try {
+    // Timeout de 20 segundos
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Tiempo de espera agotado")), 20000)
+    );
+
     // Obtener TODAS las materias de la carrera
-    const responseTodasMaterias = await fetch(`${API_URL}/carreras/${carrera.id}/materias`);
+    const fetchMaterias = fetch(`${API_URL}/carreras/${carrera.id}/materias`);
+    const responseTodasMaterias = await Promise.race([fetchMaterias, timeoutPromise]);
     const todasMaterias = await responseTodasMaterias.json();
 
     // Obtener las materias en las que el alumno PUEDE inscribirse
-    const responsePosibles = await fetch(`${API_URL}/alumnos/${alumno.id}/materias-posibles?carreraId=${carrera.id}`);
+    const fetchPosibles = fetch(`${API_URL}/alumnos/${alumno.id}/materias-posibles?carreraId=${carrera.id}`);
+    const responsePosibles = await Promise.race([fetchPosibles, timeoutPromise]);
     const materiasPosibles = await responsePosibles.json();
+
+    // Ocultar indicador de carga
+    loading.classList.add("oculto");
 
     // Crear un Set con los IDs de materias posibles para búsqueda rápida
     const idsPosibles = new Set(materiasPosibles.map(m => m.id));
@@ -185,11 +234,19 @@ async function cargarMateriasParaInscripcion() {
     // Renderizar las materias agrupadas por año
     renderizarMaterias(todasMaterias, idsPosibles);
 
-    mostrarPantalla("pantallaCursado");
-
   } catch (error) {
+    // Ocultar indicador de carga
+    loading.classList.add("oculto");
+    
     console.error("Error:", error);
-    alert("Error al cargar las materias.");
+    
+    if (error.message === "Tiempo de espera agotado") {
+      alert("⏱️ Error al cargar las materias.\n\nEl servidor está tardando en responder.");
+    } else {
+      alert("Error al cargar las materias.");
+    }
+    
+    irA("menu");
   }
 }
 
@@ -276,9 +333,22 @@ async function enviarInscripcion() {
     return; // El usuario canceló
   }
 
+  // Mostrar indicador de carga
+  const btnConfirmar = document.getElementById("btnConfirmarInscripcion");
+  const loading = document.getElementById("loadingInscripcion");
+  
+  btnConfirmar.disabled = true;
+  btnConfirmar.textContent = "Procesando...";
+  loading.classList.remove("oculto");
+
   try {
-    // Enviar la inscripción al backend
-    const response = await fetch(`${API_URL}/inscripciones`, {
+    // Timeout de 30 segundos
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Tiempo de espera agotado")), 30000)
+    );
+
+    // Enviar la inscripción al backend con timeout
+    const fetchPromise = fetch(`${API_URL}/inscripciones`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -289,20 +359,40 @@ async function enviarInscripcion() {
       })
     });
 
+    const response = await Promise.race([fetchPromise, timeoutPromise]);
+
     if (!response.ok) {
       const error = await response.json();
-      alert(`Error al inscribirse: ${error.error || error.message || "Error desconocido"}`);
-      return;
+      throw new Error(error.error || error.message || "Error desconocido");
     }
 
     const resultado = await response.json();
+    
+    // Ocultar indicador de carga
+    loading.classList.add("oculto");
+    btnConfirmar.disabled = false;
+    btnConfirmar.textContent = "Confirmar inscripción";
     
     // Mostrar confirmación con los nombres de las materias
     mostrarConfirmacion(resultado);
 
   } catch (error) {
+    // Ocultar indicador de carga
+    loading.classList.add("oculto");
+    btnConfirmar.disabled = false;
+    btnConfirmar.textContent = "Confirmar inscripción";
+    
     console.error("Error:", error);
-    alert("Error al enviar la inscripción.");
+    
+    if (error.message === "Tiempo de espera agotado") {
+      alert("⏱️ La operación está tardando más de lo esperado.\n\n" +
+            "Esto puede deberse a:\n" +
+            "• Conexión lenta con el servidor\n" +
+            "• Envío de email en proceso\n\n" +
+            "Por favor, espere un momento y verifique su inscripción en el historial.");
+    } else {
+      alert(`Error al inscribirse: ${error.message}`);
+    }
   }
 }
 
