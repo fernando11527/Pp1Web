@@ -1,7 +1,7 @@
 // ============================================
 // CONFIGURACIÓN DE LA API
 // ============================================
-const API_URL = "http://localhost:3000/api";
+const API_URL = "https://pp1-kbuk.onrender.com";
 
 // ============================================
 // FUNCIONES AUXILIARES
